@@ -14,14 +14,15 @@ Here's how to get started with using EFT!
 
 ### Creating a theme
 
-Creating a theme is simple! You just need to supply the name of the theme, and then any fields that you want!
+Creating a theme is simple! You just need to supply the name of the theme, and then any fields that you want! Not all types from EFT-py are currently supported, but the most important are. The ones you can use currently include:
+- Color
+- Int
+- String
 ```eft
 - Theme Name
 
 Primary: #fc7b2b : Color
 Background: 255,255,255 : Color
-MainFont: roboto.ttf : Font
-HomeIcon: home.png : Image
 
 FontSize: 16 : Int
 Title: My Title : String
@@ -32,5 +33,5 @@ It's super easy to implement themes into your application, with just two lines o
 ```gdscript
 my_theme = Theme("user://my_theme.eft")
 
-my_theme.get_property("Primary") # Returns a Color from the Primary field!
+my_theme.get_property("Primary") # Returns a Color from the field "Primary"!
 ```

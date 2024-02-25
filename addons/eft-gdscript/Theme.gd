@@ -11,6 +11,8 @@ var dict = {
 func _init(path: String):
 	theme_path = path
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		push_error("Unknown theme: %s" % path)
 	var file_contents: String = file.get_as_text()
 	var lines = file_contents.split("\n", true)
 	
@@ -42,7 +44,12 @@ func _format(str: String) -> String:
 	return str
 
 func get_property(property_name: String):
-	return dict.properties[property_name].value
+	if dict.properties[property_name]:
+		return dict.properties[property_name].value
+	return null
+
+func has_property(property_name: String) -> bool:
+	return dict.properties.has(property_name)
 
 func _get_object_from_type_value(raw_value: String, type: String):
 	if type == "Color":
@@ -51,5 +58,12 @@ func _get_object_from_type_value(raw_value: String, type: String):
 		return int(raw_value)
 	elif type == "String":
 		return raw_value.replace('"', "")
+	elif type == "Image":
+		var image = Image.load_from_file(theme_path+"/../"+raw_value)
+		return ImageTexture.create_from_image(image)
+	elif type == "Font":
+		var font = FontFile.new()
+		font.load_dynamic_font(theme_path+"/../"+raw_value)
+		return font
 	push_warning("Unknown value type: %s" % type)
 	return null
