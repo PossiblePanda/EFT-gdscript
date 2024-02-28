@@ -18,6 +18,8 @@ Creating a theme is simple! You just need to supply the name of the theme, and t
 - Color
 - Int
 - String
+- Image
+- Font
 ```eft
 - Theme Name
 
@@ -31,7 +33,7 @@ Title: My Title : String
 ### Implementing themes
 It's super easy to implement themes into your application, with just two lines of code you can grab a color, or any other property from the file!
 ```gdscript
-my_theme = Theme("user://my_theme.eft")
+my_theme = EFTTheme("user://my_theme.eft")
 
 my_theme.get_property("Primary") # Returns a Color from the field "Primary"!
 ```
