@@ -1,8 +1,35 @@
-extends Node
+extends RefCounted
 
 class_name EFTTheme
 
 var theme_path
+
+static func _color(raw_value: String, theme: EFTTheme):
+	return Color.from_string(raw_value, Color.ORANGE_RED)
+
+static func _int(raw_value: String, theme: EFTTheme):
+	return int(raw_value)
+
+static func _string(raw_value: String, theme: EFTTheme):
+	return raw_value.replace('"', "")
+
+static func _image(raw_value: String, theme: EFTTheme):
+	var image = Image.load_from_file(theme.theme_path+"/../"+raw_value)
+	return ImageTexture.create_from_image(image)
+
+static func _font(raw_value: String, theme: EFTTheme):
+	var font = FontFile.new()
+	font.load_dynamic_font(theme.theme_path+"/../"+raw_value)
+	return font
+
+static var types = {
+	"Color": EFTTheme._color,
+	"Int": EFTTheme._int,
+	"String": EFTTheme._string,
+	"Image": EFTTheme._image,
+	"Font": EFTTheme._font
+}
+	
 var dict = {
 		"name": "Unknown Theme Name",
 		"properties": {}
@@ -44,7 +71,7 @@ func _format(str: String) -> String:
 	return str
 
 func get_property(property_name: String):
-	if dict.properties[property_name]:
+	if dict.properties.has(property_name):
 		return dict.properties[property_name].value
 	return null
 
@@ -52,18 +79,10 @@ func has_property(property_name: String) -> bool:
 	return dict.properties.has(property_name)
 
 func _get_object_from_type_value(raw_value: String, type: String):
-	if type == "Color":
-		return Color.from_string(raw_value, Color.ORANGE_RED)
-	elif type == "Int":
-		return int(raw_value)
-	elif type == "String":
-		return raw_value.replace('"', "")
-	elif type == "Image":
-		var image = Image.load_from_file(theme_path+"/../"+raw_value)
-		return ImageTexture.create_from_image(image)
-	elif type == "Font":
-		var font = FontFile.new()
-		font.load_dynamic_font(theme_path+"/../"+raw_value)
-		return font
+	if types.has(type):
+		return types[type].call(raw_value, self)
 	push_warning("Unknown value type: %s" % type)
 	return null
+
+static func register_type(name: String, callback: Callable):
+	types[name] = callback

@@ -20,6 +20,8 @@ Creating a theme is simple! You just need to supply the name of the theme, and t
 - String
 - Image
 - Font
+
+You can also add your own types using `register_type()`
 ```eft
 - Theme Name
 
