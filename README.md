@@ -39,3 +39,11 @@ my_theme = EFTTheme("user://my_theme.eft")
 
 my_theme.get_property("Primary") # Returns a Color from the field "Primary"!
 ```
+
+## Other
+
+### Contributing
+Contributions are highly appreciated, feel free to open an issue, or open a Pull Request :)
+
+## Contact
+@possiblepanda on discord
