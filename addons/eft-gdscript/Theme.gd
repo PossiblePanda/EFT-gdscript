@@ -81,7 +81,7 @@ func has_property(property_name: String) -> bool:
 func _get_object_from_type_value(raw_value: String, type: String):
 	if types.has(type):
 		return types[type].call(raw_value, self)
-	push_warning("Unknown value type: %s" % type)
+	push_warning("Unknown value type: %s" % type + " Use register_type to add custom types.")
 	return null
 
 static func register_type(name: String, callback: Callable):
